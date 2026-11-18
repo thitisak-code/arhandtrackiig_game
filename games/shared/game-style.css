@@ -32,11 +32,13 @@ body {
     background: transparent;
     color: white;
     width: 100vw;
-    height: 100dvh;
-    overflow: auto;
+    min-height: 100dvh;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 16px 24px 28px;
 }
 
@@ -61,6 +63,8 @@ button:focus-visible {
     z-index: 20;
     min-height: 48px;
     flex-wrap: wrap;
+    flex-shrink: 0;
+    width: 100%;
 }
 
 .badge {
@@ -189,7 +193,7 @@ button:focus-visible {
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Always start from top so Question is never pushed off */
     flex: 1;
     width: 100%;
     max-width: 960px;
@@ -200,14 +204,58 @@ button:focus-visible {
     display: flex;
 }
 
+/* Question Hologram Box: Front and center */
+.question-box {
+    background: rgba(16, 38, 71, 0.94);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 24px;
+    padding: 22px 30px;
+    text-align: center;
+    width: 100%;
+    margin-top: 12px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    position: relative;
+    flex-shrink: 0; /* CRITICAL: Never squish or shrink question box */
+}
+
+.question-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
+}
+
+.q-category {
+    font-size: 13px;
+    color: #7dd3fc;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.q-text {
+    font-size: clamp(19px, 2.7vw, 29px);
+    font-weight: bold;
+    line-height: 1.6;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    overflow-wrap: anywhere;
+}
+
 /* Mode Switcher Bar */
 .mode-bar {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
-    margin: 14px 0 10px;
+    margin: 12px 0 8px;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .mode-button {
@@ -237,61 +285,20 @@ button:focus-visible {
     box-shadow: 0 0 14px var(--orange-glow);
 }
 
-/* Question Hologram Box */
-.question-box {
-    background: rgba(16, 38, 71, 0.94);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    border-radius: 24px;
-    padding: 24px 32px;
-    text-align: center;
-    width: 100%;
-    margin-top: 14px;
-    backdrop-filter: blur(14px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.question-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #38bdf8, transparent);
-}
-
-.q-category {
-    font-size: 13px;
-    color: #7dd3fc;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.q-text {
-    font-size: clamp(20px, 2.8vw, 30px);
-    font-weight: bold;
-    line-height: 1.6;
-    color: #ffffff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
 /* ----------------------------------------------------
    INTERACTIVE AR PLAYGROUND & MODES
    ---------------------------------------------------- */
 .ar-spacer {
     position: relative;
     width: 100%;
-    min-height: 170px;
-    padding: 12px 0;
+    min-height: 160px;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     pointer-events: none;
+    flex-shrink: 0;
 }
 
 .drop-zone {
@@ -300,14 +307,14 @@ button:focus-visible {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    min-width: 260px;
-    min-height: 150px;
+    gap: 8px;
+    min-width: 250px;
+    min-height: 140px;
     border: 3px dashed rgba(145, 179, 220, 0.6);
-    border-radius: 28px;
+    border-radius: 26px;
     background: rgba(20, 51, 84, 0.9);
     color: #dceaff;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     backdrop-filter: blur(10px);
@@ -320,7 +327,7 @@ button:focus-visible {
 }
 
 .target-icon {
-    font-size: 64px;
+    font-size: 58px;
     line-height: 1;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
     transition: transform 0.2s;
@@ -359,9 +366,9 @@ body[data-mode="basket"] .drop-zone {
 /* Mode 2: Portal (Cosmic Vortex) */
 body[data-mode="portal"] .drop-zone {
     border-radius: 50%;
-    min-width: 200px;
-    width: 220px;
-    min-height: 180px;
+    min-width: 190px;
+    width: 210px;
+    min-height: 170px;
     border: 4px solid #a78bfa;
     background: radial-gradient(circle, #312e81 0%, #0f172a 75%);
     box-shadow: 0 0 35px rgba(167, 139, 250, 0.45), inset 0 0 30px rgba(167, 139, 250, 0.35);
@@ -386,7 +393,7 @@ body[data-mode="rocket"] .delivered .target-icon {
 /* Mode 4: Balloon (Glossy 3D Latex) */
 body[data-mode="balloon"] .choice-btn {
     border-radius: 48% 48% 44% 44%;
-    min-height: 155px;
+    min-height: 145px;
     background: radial-gradient(circle at 35% 30%, #3b82f6, #1d4ed8 70%);
     box-shadow: 0 16px 35px rgba(0, 0, 0, 0.4), inset -4px -6px 12px rgba(0, 0, 0, 0.4), inset 6px 6px 14px rgba(255, 255, 255, 0.4);
     justify-content: center;
@@ -425,30 +432,32 @@ body[data-mode="star"] .choice-key::before {
     color: var(--gold);
 }
 
-/* Mode 6: Tap (Biometric HUD Reticle) */
+/* Compact spacer modes */
 body[data-mode="tap"] .ar-spacer,
 body[data-mode="star"] .ar-spacer,
 body[data-mode="balloon"] .ar-spacer {
-    min-height: 70px;
+    min-height: 65px;
 }
 
 /* Feedback & Status */
 .interaction-status {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--orange);
     text-align: center;
-    min-height: 26px;
-    margin: 8px 0;
+    min-height: 24px;
+    margin: 6px 0;
     text-shadow: 0 0 12px var(--orange-glow);
+    flex-shrink: 0;
 }
 
 .answer-hint {
     font-size: 13px;
     color: var(--muted);
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     max-width: 720px;
+    flex-shrink: 0;
 }
 
 /* Feedback Toast */
@@ -492,9 +501,10 @@ body[data-mode="balloon"] .ar-spacer {
 .choices-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
+    gap: 18px;
     width: 100%;
     margin-bottom: 8px;
+    flex-shrink: 0;
 }
 
 .choice-btn {
@@ -503,15 +513,15 @@ body[data-mode="balloon"] .ar-spacer {
     isolation: isolate;
     display: flex;
     align-items: center;
-    gap: 20px;
-    min-height: 120px;
-    padding: 24px 28px;
+    gap: 18px;
+    min-height: 110px;
+    padding: 20px 24px;
     text-align: left;
     background: rgba(24, 54, 91, 0.94);
     border: 2px solid #4a6a94;
-    border-radius: 24px;
+    border-radius: 22px;
     color: white;
-    font-size: clamp(18px, 2.6vw, 26px);
+    font-size: clamp(17px, 2.5vw, 24px);
     font-weight: bold;
     cursor: pointer;
     backdrop-filter: blur(12px);
@@ -523,9 +533,9 @@ body[data-mode="balloon"] .ar-spacer {
 .choice-key {
     display: grid;
     place-items: center;
-    flex: 0 0 44px;
-    height: 44px;
-    border-radius: 14px;
+    flex: 0 0 42px;
+    height: 42px;
+    border-radius: 12px;
     background: rgba(255, 255, 255, 0.1);
     font-size: 18px;
     font-weight: 800;
@@ -574,14 +584,14 @@ body[data-mode="balloon"] .ar-spacer {
 .drag-ghost {
     position: fixed;
     transform: translate(-50%, -50%) rotate(-3deg);
-    padding: 18px 28px;
+    padding: 16px 26px;
     max-width: 65vw;
     border: 3px solid var(--orange);
     border-radius: 20px;
     background: rgba(255, 179, 106, 0.95);
     color: var(--navy-deep);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--orange-glow);
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 900;
     pointer-events: none;
     z-index: 10000;
@@ -596,7 +606,7 @@ body[data-mode="balloon"] .ar-spacer {
     background: rgba(16, 38, 71, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 32px;
-    padding: 40px 48px;
+    padding: 36px 42px;
     text-align: center;
     width: 100%;
     max-width: 600px;
@@ -606,15 +616,15 @@ body[data-mode="balloon"] .ar-spacer {
 }
 
 .result-trophy {
-    font-size: 72px;
+    font-size: 68px;
     line-height: 1;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     filter: drop-shadow(0 10px 20px rgba(250, 204, 21, 0.4));
     animation: trophyBounce 2s infinite ease-in-out;
 }
 
 .summary-card h2 {
-    font-size: 28px;
+    font-size: 26px;
     color: #ffffff;
     margin-bottom: 6px;
 }
@@ -622,21 +632,21 @@ body[data-mode="balloon"] .ar-spacer {
 .summary-card p {
     font-size: 14px;
     color: var(--muted);
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
 /* Final Score Box */
 .final-score-wrap {
     background: rgba(24, 54, 91, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 24px;
-    padding: 20px;
-    margin-bottom: 24px;
+    border-radius: 22px;
+    padding: 18px;
+    margin-bottom: 22px;
 }
 
 .final-score-label {
     display: block;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -644,12 +654,12 @@ body[data-mode="balloon"] .ar-spacer {
 }
 
 .final-score {
-    font-size: 64px;
+    font-size: 58px;
     font-weight: 900;
     color: #ffedd5;
     text-shadow: 0 0 30px var(--orange-glow);
     line-height: 1.1;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .score-grade-pill {
@@ -690,14 +700,14 @@ body[data-mode="balloon"] .ar-spacer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .stat-card {
     background: rgba(10, 25, 48, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 18px;
-    padding: 14px 10px;
+    border-radius: 16px;
+    padding: 12px 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -705,11 +715,11 @@ body[data-mode="balloon"] .ar-spacer {
 }
 
 .stat-icon {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .stat-val {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     color: #ffffff;
 }
@@ -727,7 +737,7 @@ body[data-mode="balloon"] .ar-spacer {
     color: var(--navy-deep);
     border: none;
     border-radius: 16px;
-    padding: 16px 28px;
+    padding: 15px 26px;
     font-size: 16px;
     font-weight: 800;
     width: 100%;
@@ -818,11 +828,11 @@ body[data-mode="balloon"] .ar-spacer {
 }
 
 /* ----------------------------------------------------
-   RESPONSIVE LAYOUTS
+   RESPONSIVE LAYOUTS FOR MOBILE & TABLET
    ---------------------------------------------------- */
 @media (max-width: 768px) {
     .top-bar {
-        padding-left: 110px;
+        padding-left: 100px;
         gap: 8px;
     }
     .badge {
@@ -830,19 +840,10 @@ body[data-mode="balloon"] .ar-spacer {
         font-size: 12px;
     }
     .timer-badge {
-        min-width: 105px;
+        min-width: 100px;
     }
     .score-badge {
-        min-width: 110px;
-    }
-    .choices-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
-    .choice-btn {
-        min-height: 90px;
-        padding: 18px 20px;
-        font-size: 19px;
+        min-width: 105px;
     }
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -856,27 +857,178 @@ body[data-mode="balloon"] .ar-spacer {
     }
 }
 
+/* Mobile Screens (Phones portrait & narrow displays) */
 @media (max-width: 600px) {
     body {
-        padding: 14px 16px 20px;
+        padding: 10px 12px 20px;
+        min-height: 100dvh;
+        height: auto;
+        overflow-y: auto;
     }
-    .question-box {
-        margin-top: 10px;
-        padding: 18px 16px;
+
+    /* Top bar: compact 1-row layout next to Back button without wrapping collision */
+    .top-bar {
+        padding-left: 92px; /* Leaves room for compact #btn-back */
+        gap: 6px;
+        min-height: 38px;
+        margin-bottom: 6px;
+        flex-wrap: nowrap; /* Keep timer, progress, score in 1 line */
+        justify-content: flex-end;
     }
-    .q-text {
-        font-size: 19px;
+
+    .badge {
+        padding: 6px 8px;
+        font-size: 11px;
+        border-radius: 12px;
+        gap: 4px;
     }
-    .ar-spacer {
-        min-height: 120px;
+
+    .timer-badge {
+        min-width: 82px;
+        padding-bottom: 8px;
     }
-    .drop-zone {
-        min-width: 200px;
-        min-height: 120px;
+    .timer-icon {
+        font-size: 12px;
+    }
+    .timer-bar-track {
+        bottom: 2px;
+        left: 6px;
+        right: 6px;
+        height: 3px;
+    }
+
+    .progress-badge {
+        font-size: 11px;
+        padding: 6px 8px;
+        white-space: nowrap;
+    }
+
+    .score-badge {
+        min-width: 85px;
+        padding: 6px 8px;
+        white-space: nowrap;
+    }
+    .score-badge b {
         font-size: 13px;
     }
+
+    /* Question Box: FRONT AND CENTER! 100% visible, never pushed off-screen */
+    .question-box {
+        margin-top: 6px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        flex-shrink: 0; /* NEVER collapse question box */
+    }
+    .q-category {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+    .q-text {
+        font-size: clamp(16px, 4.2vw, 20px);
+        line-height: 1.5;
+    }
+
+    /* Mode Bar: Single swipeable row, no clutter */
+    .mode-bar {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        padding: 4px 2px;
+        gap: 6px;
+        margin: 6px 0;
+        width: 100%;
+        scrollbar-width: none;
+    }
+    .mode-bar::-webkit-scrollbar {
+        display: none;
+    }
+    .mode-button {
+        font-size: 11px;
+        padding: 5px 10px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* AR Spacer & Drop zone: Compact & responsive */
+    .ar-spacer {
+        min-height: 80px;
+        padding: 4px 0;
+    }
+    .drop-zone {
+        min-width: 170px;
+        min-height: 75px;
+        padding: 8px 14px;
+        border-radius: 18px;
+        gap: 4px;
+        font-size: 12px;
+    }
     .target-icon {
-        font-size: 48px;
+        font-size: 32px;
+    }
+
+    .interaction-status {
+        font-size: 11px;
+        min-height: 18px;
+        margin: 4px 0;
+    }
+
+    .answer-hint {
+        font-size: 11px;
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+
+    /* Choices Grid: 2 side-by-side columns on mobile */
+    .choices-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 4px;
+        margin-bottom: 6px;
+    }
+    .choice-btn {
+        min-height: 70px;
+        padding: 10px 12px;
+        font-size: clamp(14px, 3.8vw, 17px);
+        border-radius: 16px;
+        gap: 8px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+    .choice-key {
+        flex: 0 0 26px;
+        width: 26px;
+        height: 26px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+
+    /* Summary Card on Mobile */
+    .summary-card {
+        padding: 24px 16px;
+        border-radius: 24px;
+    }
+    .result-trophy {
+        font-size: 50px;
+        margin-bottom: 8px;
+    }
+    .summary-card h2 {
+        font-size: 22px;
+    }
+    .final-score {
+        font-size: 44px;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .stat-card {
+        padding: 10px 8px;
+    }
+    .stat-val {
+        font-size: 15px;
     }
 }
 

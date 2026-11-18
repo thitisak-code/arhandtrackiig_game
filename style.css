@@ -552,6 +552,16 @@ header p {
     .screen {
         padding: 20px;
     }
+    #game-container {
+        padding: 0 !important;
+    }
+    #btn-back {
+        top: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        font-size: 11px;
+        border-radius: 10px;
+    }
     .start-box {
         grid-template-columns: 1fr;
     }
