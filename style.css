@@ -617,6 +617,103 @@ header p {
     }
 }
 
+/* Mobile Phones in Landscape Orientation (Wide width + Short height <= 550px) */
+@media (orientation: landscape) and (max-height: 550px), (max-height: 500px) {
+    #btn-back {
+        top: 6px;
+        left: 8px;
+        padding: 5px 12px;
+        font-size: 11px;
+        border-radius: 10px;
+    }
+    .screen {
+        padding: 10px 14px;
+        overflow-y: auto;
+    }
+    #game-container {
+        padding: 0 !important;
+    }
+    .tracking-hud {
+        bottom: 8px;
+        right: 8px;
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+    .start-box {
+        grid-template-columns: 1fr;
+        max-height: 94dvh;
+        overflow-y: auto;
+    }
+    .intro-art {
+        display: none;
+    }
+    .intro-copy {
+        padding: 14px 18px;
+    }
+    .intro-copy h1 {
+        font-size: 20px;
+        margin-bottom: 6px;
+        line-height: 1.25;
+    }
+    .intro-copy p {
+        font-size: 12px;
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+    .rule-pill-bar {
+        margin-bottom: 10px;
+        gap: 6px;
+    }
+    .rule-pill {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+    .game-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    .game-card {
+        padding: 10px 12px;
+    }
+    .game-card .icon {
+        font-size: 24px;
+        margin-bottom: 6px;
+    }
+    .game-card h3 {
+        font-size: 12px;
+        margin-bottom: 2px;
+    }
+    .game-card p {
+        display: none;
+    }
+    .card-pills {
+        margin-bottom: 6px;
+        gap: 4px;
+    }
+    .card-pill {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+    .card-action {
+        margin-top: 6px;
+        padding-top: 6px;
+        font-size: 10px;
+    }
+    header {
+        margin-bottom: 8px;
+    }
+    header h1 {
+        font-size: 18px;
+    }
+    header p {
+        font-size: 11px;
+    }
+    header .eyebrow {
+        margin-top: 2px;
+        font-size: 10px;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         transition: none !important;
