@@ -3,12 +3,12 @@
 // ==========================================
 
 const GAME_MODES = [
-  {id:'basket', name:'หยิบลงตะกร้า', icon:'🧺', target:'ปล่อยคำตอบลงตะกร้า', kind:'drag'},
-  {id:'portal', name:'ประตูมิติ', icon:'◎', target:'ส่งคำตอบผ่านประตูมิติ', kind:'drag'},
-  {id:'rocket', name:'เติมพลังจรวด', icon:'🚀', target:'วางคำตอบเพื่อปล่อยจรวด', kind:'drag'},
-  {id:'balloon', name:'บีบลูกโป่ง', icon:'🎈', target:'จีบนิ้วบนลูกโป่งคำตอบ', kind:'tap'},
-  {id:'star', name:'ชี้ดาวค้าง', icon:'⭐', target:'ชี้คำตอบค้าง 1 วินาที', kind:'dwell'},
-  {id:'tap', name:'จีบนิ้วเลือก', icon:'🤏', target:'ชี้คำตอบ แล้วจีบนิ้ว', kind:'tap'}
+  {id:'basket', name:'หยิบลงตะกร้า', icon:'fa-solid fa-basket-shopping', target:'ปล่อยคำตอบลงตะกร้า', kind:'drag'},
+  {id:'portal', name:'ประตูมิติ', icon:'fa-solid fa-atom', target:'ส่งคำตอบผ่านประตูมิติ', kind:'drag'},
+  {id:'rocket', name:'เติมพลังจรวด', icon:'fa-solid fa-rocket', target:'วางคำตอบเพื่อปล่อยจรวด', kind:'drag'},
+  {id:'balloon', name:'บีบลูกโป่ง', icon:'fa-solid fa-bowling-ball', target:'จีบนิ้วบนลูกโป่งคำตอบ', kind:'tap'},
+  {id:'star', name:'ชี้ดาวค้าง', icon:'fa-solid fa-star', target:'ชี้คำตอบค้าง 1 วินาที', kind:'dwell'},
+  {id:'tap', name:'จีบนิ้วเลือก', icon:'fa-solid fa-hand-pointer', target:'ชี้คำตอบ แล้วจีบนิ้ว', kind:'tap'}
 ];
 
 let chosenMode = 'mixed', activeMode = GAME_MODES[0];
@@ -21,11 +21,11 @@ let suppressTimer, handTimer;
 const modeBar = document.createElement('div');
 modeBar.className = 'mode-bar';
 modeBar.setAttribute('aria-label', 'เลือกรูปแบบเกม');
-for (const mode of [{id:'mixed', name:'สลับเกม', icon:'🔀'}, ...GAME_MODES]) {
+for (const mode of [{id:'mixed', name:'สลับเกม', icon:'fa-solid fa-shuffle'}, ...GAME_MODES]) {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'mode-button ar-target';
-  button.textContent = `${mode.icon} ${mode.name}`;
+  button.innerHTML = `<i class="${mode.icon}"></i> <span>${mode.name}</span>`;
   button.dataset.mode = mode.id;
   button.addEventListener('click', () => {
     if (isLocked) return;
@@ -62,9 +62,8 @@ function configureRound(index) {
   dropZone.hidden = activeMode.kind !== 'drag';
   dropZone.replaceChildren();
 
-  const icon = document.createElement('span');
-  icon.className = 'target-icon';
-  icon.textContent = activeMode.icon;
+  const icon = document.createElement('i');
+  icon.className = `target-icon ${activeMode.icon}`;
 
   const label = document.createElement('span');
   label.textContent = activeMode.target;
@@ -79,7 +78,7 @@ function configureRound(index) {
         : 'ชี้คำตอบแล้วจีบนิ้ว หรือคลิก / แตะคำตอบ';
   }
 
-  status.textContent = `${activeMode.icon} ${activeMode.name}`;
+  status.innerHTML = `<i class="${activeMode.icon}"></i> <span>${activeMode.name}</span>`;
 }
 
 // Tactile Audio Synthesis for Interaction (Grab & Drop)

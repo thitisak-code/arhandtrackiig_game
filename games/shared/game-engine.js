@@ -174,10 +174,10 @@ function shuffleArray(arr) {
     return result;
 }
 
-function showToast(text, isCorrect) {
+function showToast(htmlContent, isCorrect) {
     const toast = document.getElementById('feedback-toast');
     if (!toast) return;
-    toast.textContent = text;
+    toast.innerHTML = htmlContent;
     toast.className = `show ${isCorrect ? 'correct' : 'wrong'}`;
     setTimeout(() => {
         toast.className = '';
@@ -323,7 +323,7 @@ function handleAnswer(btnElement, selectedText) {
         correctCount++;
         btnElement.classList.add('correct-ans');
         spawnFloatingScore('+10', true, btnElement);
-        showToast('ถูกต้อง! +10 คะแนน 🌟', true);
+        showToast('<i class="fa-solid fa-circle-check"></i> ถูกต้อง! +10 คะแนน', true);
         playTone(true);
     } else {
         score -= 10;
@@ -333,7 +333,7 @@ function handleAnswer(btnElement, selectedText) {
         document.querySelectorAll('.choice-btn').forEach(b => {
             if (b.dataset.choice === item.ans) b.classList.add('correct-ans');
         });
-        showToast('ตอบผิด! -10 คะแนน 💥', false);
+        showToast('<i class="fa-solid fa-circle-xmark"></i> ตอบผิด! -10 คะแนน', false);
         playTone(false);
     }
 
@@ -361,7 +361,7 @@ function timeOutGame() {
     isLocked = true;
     document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
 
-    showToast('⏰ หมดเวลา 2 นาที!', false);
+    showToast('<i class="fa-solid fa-stopwatch"></i> หมดเวลา 2 นาที!', false);
     playFanfare(false);
 
     setTimeout(() => {
@@ -398,7 +398,7 @@ function endGame(isTimedOut) {
 
     const resultTitle = document.getElementById('result-title');
     if (resultTitle) {
-        resultTitle.textContent = isTimedOut ? '⏰ หมดเวลา 2 นาที!' : '🏆 พิชิตด่านสำเร็จ!';
+        resultTitle.innerHTML = isTimedOut ? '<i class="fa-solid fa-stopwatch"></i> หมดเวลา 2 นาที!' : '<i class="fa-solid fa-trophy"></i> พิชิตด่านสำเร็จ!';
     }
 
     const resultSubtitle = document.getElementById('result-subtitle');
@@ -425,16 +425,16 @@ function endGame(isTimedOut) {
     const scoreGrade = document.getElementById('score-grade');
     if (scoreGrade) {
         if (score >= 80) {
-            scoreGrade.textContent = '🌟 ระดับ: อัจฉริยะคณิตศาสตร์!';
+            scoreGrade.innerHTML = '<i class="fa-solid fa-crown"></i> ระดับ: อัจฉริยะคณิตศาสตร์!';
             scoreGrade.className = 'score-grade-pill master';
         } else if (score >= 50) {
-            scoreGrade.textContent = '✨ ระดับ: ยอดเยี่ยมมาก!';
+            scoreGrade.innerHTML = '<i class="fa-solid fa-star"></i> ระดับ: ยอดเยี่ยมมาก!';
             scoreGrade.className = 'score-grade-pill expert';
         } else if (score >= 20) {
-            scoreGrade.textContent = '👍 ระดับ: ผ่านเกณฑ์ได้ดี!';
+            scoreGrade.innerHTML = '<i class="fa-solid fa-thumbs-up"></i> ระดับ: ผ่านเกณฑ์ได้ดี!';
             scoreGrade.className = 'score-grade-pill skilled';
         } else {
-            scoreGrade.textContent = '💪 ระดับ: ฝึกฝนอีกนิด พิชิตได้แน่นอน!';
+            scoreGrade.innerHTML = '<i class="fa-solid fa-dumbbell"></i> ระดับ: ฝึกฝนอีกนิด พิชิตได้แน่นอน!';
             scoreGrade.className = 'score-grade-pill rookie';
         }
     }

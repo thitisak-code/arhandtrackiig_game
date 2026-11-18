@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ด่านที่ 2: การเรียงสลับที่</title>
     <link rel="stylesheet" href="../shared/game-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
     <div class="top-bar">
         <div class="badge timer-badge" id="timer-badge" role="timer" aria-live="off" title="เวลาที่เหลือ 2 นาที">
-            <span class="timer-icon">⏱️</span>
+            <span class="timer-icon"><i class="fa-solid fa-stopwatch"></i></span>
             <span id="timer-val">02:00</span>
             <div class="timer-bar-track"><div class="timer-bar-fill" id="timer-bar-fill"></div></div>
         </div>
         <div class="badge" id="progress-badge">ข้อ 1 / 10</div>
         <div class="badge score-badge" id="score-badge">
-            <span class="score-icon">💎</span>
+            <span class="score-icon"><i class="fa-solid fa-gem"></i></span>
             <span>คะแนน: <b id="score-val">0</b></span>
         </div>
     </div>
@@ -31,55 +32,55 @@
 
     <div id="result-view" class="view">
         <div class="summary-card">
-            <div class="result-trophy" id="result-trophy">🏆</div>
-            <h2 id="result-title">🎉 สรุปผลการเล่น!</h2>
+            <div class="result-trophy" id="result-trophy"><i class="fa-solid fa-trophy"></i></div>
+            <h2 id="result-title"><i class="fa-solid fa-award"></i> สรุปผลการเล่น!</h2>
             <p id="result-subtitle">สรุปคะแนนการเรียงสลับที่</p>
             <div class="final-score-wrap">
                 <span class="final-score-label">คะแนนรวม</span>
                 <div class="final-score" id="final-score-val">0</div>
-                <div class="score-grade-pill master" id="score-grade">ระดับ: ยอดเยี่ยม! 🌟</div>
+                <div class="score-grade-pill master" id="score-grade"><i class="fa-solid fa-star"></i> ระดับ: ยอดเยี่ยม!</div>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-icon">⏱️</span>
+                    <span class="stat-icon"><i class="fa-solid fa-stopwatch"></i></span>
                     <span class="stat-val" id="stat-time">00:00</span>
                     <span class="stat-name">เวลาที่ใช้</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-icon">✅</span>
+                    <span class="stat-icon"><i class="fa-solid fa-circle-check"></i></span>
                     <span class="stat-val correct" id="stat-correct">0</span>
                     <span class="stat-name">ตอบถูก (+10)</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-icon">❌</span>
+                    <span class="stat-icon"><i class="fa-solid fa-circle-xmark"></i></span>
                     <span class="stat-val wrong" id="stat-wrong">0</span>
                     <span class="stat-name">ตอบผิด (-10)</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-icon">🎯</span>
+                    <span class="stat-icon"><i class="fa-solid fa-chart-pie"></i></span>
                     <span class="stat-val" id="stat-accuracy">0%</span>
                     <span class="stat-name">ความแม่นยำ</span>
                 </div>
             </div>
             <div class="summary-buttons">
-                <button class="btn-restart ar-target" id="btn-restart" type="button">🔄 เล่นด่านนี้อีกครั้ง</button>
+                <button class="btn-restart ar-target" id="btn-restart" type="button"><i class="fa-solid fa-rotate-right"></i> เล่นด่านนี้อีกครั้ง</button>
             </div>
         </div>
     </div>
 
     <script>
-        const STAGE_TITLE = "หมวดที่ 2: การเรียงสลับที่ (แบบง่ายที่สุด)";
+        const STAGE_TITLE = "หมวดที่ 2: การเรียงสลับที่ (เข้าใจง่าย)";
         const GAME_QUESTIONS = [
-            { q: "11. มีคน 2 คน (A กับ B) ยืนเข้าแถวเรียงกัน จะยืนได้กี่แบบ", choices: ["2 แบบ", "1 แบบ"], ans: "2 แบบ" },
-            { q: "12. มีคน 3 คน (A, B, C) ยืนเข้าแถวเรียงกัน จะยืนได้กี่แบบ", choices: ["6 แบบ", "3 แบบ"], ans: "6 แบบ" },
-            { q: "13. มีเก้าอี้ 2 ตัว คน 2 คน นั่งเก้าอี้คนละตัว จะสลับกันนั่งได้กี่แบบ", choices: ["2 แบบ", "1 แบบ"], ans: "2 แบบ" },
-            { q: "14. มีธงสีแดง 1 ผืน สีเขียว 1 ผืน นำมาแขวนเรียงต่อกัน จะแขวนได้กี่แบบ", choices: ["2 แบบ", "1 แบบ"], ans: "2 แบบ" },
-            { q: "15. ครูมีลูกอมรสส้ม 1 เม็ด รสสตรอว์เบอร์รี 1 เม็ด แจกให้เด็ก 2 คน คนละเม็ด จะแจกได้กี่แบบ", choices: ["2 แบบ", "1 แบบ"], ans: "2 แบบ" },
-            { q: "16. มีหนังสือคณิตกับภาษาไทย นำมาวางเรียงบนโต๊ะซ้าย-ขวา จะวางได้กี่แบบ", choices: ["2 แบบ", "1 แบบ"], ans: "2 แบบ" },
-            { q: "17. มีเลข 1 กับ 2 นำมาสร้างเลข 2 หลัก (ห้ามใช้เลขซ้ำ) จะได้กี่จำนวน", choices: ["2 จำนวน", "4 จำนวน"], ans: "2 จำนวน" },
-            { q: "18. มีเลข 1, 2, 3 นำมาสร้างเลข 2 หลัก (ห้ามใช้เลขซ้ำ) จะได้กี่จำนวน", choices: ["6 จำนวน", "9 จำนวน"], ans: "6 จำนวน" },
-            { q: "19. มีนักเรียน 4 คน ต้องการเลือกหัวหน้าห้อง 1 คน จะเลือกได้กี่แบบ", choices: ["4 แบบ", "1 แบบ"], ans: "4 แบบ" },
-            { q: "20. จัดนักเรียน 5 คน ให้นั่งเก้าอี้ที่มีแค่ 1 ตัว จะมีคนได้นั่งกี่แบบ", choices: ["5 แบบ", "1 แบบ"], ans: "5 แบบ" }
+            { q: "11. นำตัวอักษร A และ B มาเรียงแถวตรง ได้กี่วิธี", choices: ["2 วิธี (AB, BA)", "1 วิธี (AB)"], ans: "2 วิธี (AB, BA)" },
+            { q: "12. นำคน 3 คน มาเข้าแถวหน้ากระดาน 3 ตำแหน่ง สลับได้กี่วิธี", choices: ["6 วิธี (3!)", "3 วิธี"], ans: "6 วิธี (3!)" },
+            { q: "13. นำหนังสือ 4 เล่มต่างกัน มาวางเรียงบนชั้นได้กี่วิธี", choices: ["24 วิธี (4!)", "12 วิธี"], ans: "24 วิธี (4!)" },
+            { q: "14. มีเก้าอี้ 2 ตัว คน 2 คน นั่งได้กี่แบบ", choices: ["2 แบบ", "4 แบบ"], ans: "2 แบบ" },
+            { q: "15. สลับคำว่า \"CAT\" เป็นคำใหม่โดยใช้ทุกตัวอักษร ได้ทั้งหมดกี่คำ", choices: ["6 คำ", "3 คำ"], ans: "6 คำ" },
+            { q: "16. 3! (สามแฟกทอเรียล = 3x2x1) มีค่าเท่ากับข้อใด", choices: ["6", "9"], ans: "6" },
+            { q: "17. 2! มีค่าเท่ากับข้อใด", choices: ["2", "4"], ans: "2" },
+            { q: "18. จัดเพื่อน 4 คน วิ่งผลัด 4 ไม้ โดยไม้ 1-4 ไม่ซ้ำกัน จะจัดได้กี่แบบ", choices: ["24 แบบ", "16 แบบ"], ans: "24 แบบ" },
+            { q: "19. มีกระถางต้นไม้ต่างสีกัน 3 กระถาง วางเรียงหน้าบ้านได้กี่แบบ", choices: ["6 แบบ", "3 แบบ"], ans: "6 แบบ" },
+            { q: "20. สร้างเลข 2 หลักจากเลข 1 และ 2 โดยไม่ใช้เลขซ้ำ ได้กี่จำนวน", choices: ["2 จำนวน (12, 21)", "1 จำนวน"], ans: "2 จำนวน (12, 21)" }
         ];
     </script>
     <script src="../shared/interactions.js"></script>

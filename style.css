@@ -436,6 +436,9 @@ header p {
     padding: 4px 8px;
     border-radius: 10px;
     backdrop-filter: blur(6px);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .card-pill.timer {
@@ -521,6 +524,9 @@ header p {
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     transition: transform 0.15s, background 0.15s, border-color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 #btn-back.hovered {

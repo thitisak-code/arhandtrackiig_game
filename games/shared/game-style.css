@@ -269,6 +269,9 @@ button:focus-visible {
     cursor: pointer;
     backdrop-filter: blur(8px);
     transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .mode-button:hover,
@@ -427,8 +430,10 @@ body[data-mode="star"] .choice-key {
 }
 
 body[data-mode="star"] .choice-key::before {
-    content: '★';
-    font-size: 26px;
+    content: '\f005';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 20px;
     color: var(--gold);
 }
 
