@@ -1108,15 +1108,15 @@ body[data-mode="balloon"] .ar-spacer {
         flex: 1;
     }
 
-    /* Active Play View: Left Side Menu for Choices, Right Side for Question & Drop Zone */
+    /* Active Play View: Left Side for Question & Drop Zone, Right Side for Choices Menu */
     #play-view.view.active {
         display: grid !important;
-        grid-template-columns: 220px 1fr !important;
+        grid-template-columns: 1fr 220px !important;
         grid-template-rows: auto 1fr auto !important;
         grid-template-areas:
-            "choices question"
-            "choices spacer"
-            "choices hint" !important;
+            "question choices"
+            "spacer   choices"
+            "hint     choices" !important;
         column-gap: 16px !important;
         row-gap: 4px !important;
         align-items: stretch !important;
@@ -1125,7 +1125,7 @@ body[data-mode="balloon"] .ar-spacer {
         overflow: hidden !important;
     }
 
-    /* LEFT SIDE MENU: Choices arranged vertically, perfect size for grabbing */
+    /* RIGHT SIDE MENU: Choices arranged vertically on the right, perfect size for grabbing */
     .choices-grid {
         grid-area: choices !important;
         display: flex !important;
@@ -1171,7 +1171,7 @@ body[data-mode="balloon"] .ar-spacer {
         white-space: normal !important;
     }
 
-    /* RIGHT SIDE TOP: Question Box (Front & Center, 100% visible) */
+    /* LEFT SIDE TOP: Question Box (Front & Center, 100% visible) */
     .question-box {
         grid-area: question !important;
         margin-top: 0 !important;
@@ -1198,7 +1198,7 @@ body[data-mode="balloon"] .ar-spacer {
         display: none !important;
     }
 
-    /* RIGHT SIDE CENTER: AR Target & Drop zone (ตะกร้า, จรวด, ประตูมิติ ย่อขนาดพอดี ไม่บังโจทย์) */
+    /* LEFT SIDE CENTER: AR Target & Drop zone (ตะกร้า, จรวด, ประตูมิติ ย่อขนาดพอดี ไม่บังโจทย์) */
     .ar-spacer {
         grid-area: spacer !important;
         min-height: 56px !important;
@@ -1240,7 +1240,7 @@ body[data-mode="balloon"] .ar-spacer {
         border-radius: 14px !important;
     }
 
-    /* RIGHT SIDE BOTTOM: Hint text */
+    /* LEFT SIDE BOTTOM: Hint text */
     .answer-hint {
         grid-area: hint !important;
         font-size: 10px !important;
