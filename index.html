@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ส่องทะลุจอ พิชิตโลกความน่าจะเป็นด้วยเกม AR</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <video id="webcam" autoplay playsinline muted></video>
+    <canvas id="ar-canvas"></canvas>
+
+    <div id="hand-cursor"></div>
+    <div id="tracking-hud" class="tracking-hud" role="status" aria-live="polite">
+        <span class="hud-dot"></span>
+        <span class="hud-text">กำลังค้นหามือ…</span>
+    </div>
+
+    <!-- หน้าจอเริ่มต้น (สำหรับขอสิทธิ์กล้องและเสียงบนมือถือ) -->
+    <div id="start-screen" class="screen active">
+        <div class="start-box">
+            <div class="intro-copy">
+                <div class="brand">✳ น้องดีจิ <small>Math playground</small></div>
+                <p class="eyebrow">ห้องทดลองความน่าจะเป็น • ท้าทายความเร็ว 2 นาที</p>
+                <h1>ยกมือขึ้น<br>แล้วมาเล่นกับ<br>ความเป็นไปได้</h1>
+                <p>เปลี่ยนคณิตศาสตร์ให้เป็นเกม AR สุดล้ำตรงหน้า ตัดสินใจให้ไว ตอบถูกรับ <b>+10</b> ตอบผิด <b>-10</b> พิชิตให้ได้คะแนนสูงสุดใน 2 นาที!</p>
+                
+                <div class="rule-pill-bar">
+                    <span class="rule-pill">⏱️ จับเวลา 2 นาที</span>
+                    <span class="rule-pill">💎 ตอบถูก +10 / ผิด -10</span>
+                    <span class="rule-pill">🤏 ชี้แล้วจีบนิ้วเพื่อเลือก</span>
+                </div>
+
+                <button id="btn-start-camera" type="button">เปิดกล้อง เริ่มเล่นด้วยมือ ↗</button>
+                <button id="btn-start-mouse" type="button">เล่นด้วยเมาส์หรือสัมผัส</button>
+                <p id="loading-text" role="status" style="display:none">กำลังเตรียมกล้องและระบบตรวจจับมือ…</p>
+                <small class="privacy-note">เปิดกล้องเมื่อคุณพร้อม · ไม่มีการบันทึกภาพจากกล้อง</small>
+            </div>
+            <div class="intro-art" aria-hidden="true">
+                <span class="art-label">ทุกคำตอบ เริ่มจากการลอง</span>
+                <span class="math-float">½</span>
+                <div class="dice">⚄</div>
+                <span class="math-float second">n!</span>
+                <div class="art-bottom">
+                    <b>4 ด่านความท้าทาย</b>
+                    <p>ด่านละ 2 นาที · ข้อละ 10 คะแนน</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- หน้าเมนูหลัก (Hub แสดงแต่ละโฟลเดอร์เกม) -->
+    <div id="hub-menu" class="screen">
+        <header>
+            <div class="brand">✳ น้องดีจิ</div>
+            <p class="eyebrow">เลือกเส้นทางการเรียนรู้</p>
+            <h1>วันนี้ จะพิชิตด่านไหน?</h1>
+            <p>ชี้แล้วจีบนิ้ว หรือคลิกเพื่อเลือกด่าน · จับเวลาด่านละ 2 นาที · ตอบถูก +10 / ผิด -10</p>
+        </header>
+
+        <div class="game-grid">
+            <button class="game-card interactable" type="button" data-game="games/cat1-counting/index.html">
+                <div class="card-pills">
+                    <span class="card-pill timer">⏱️ 2 นาที</span>
+                    <span class="card-pill score">💎 ±10 pt</span>
+                </div>
+                <div class="icon">👕</div>
+                <h3>ด่านที่ 1: การนับเบื้องต้น</h3>
+                <p>จับคู่สิ่งของและเส้นทาง (10 ข้อ)</p>
+                <span class="card-action">เริ่มสำรวจ ↗</span>
+            </button>
+
+            <button class="game-card interactable" type="button" data-game="games/cat2-permutation/index.html">
+                <div class="card-pills">
+                    <span class="card-pill timer">⏱️ 2 นาที</span>
+                    <span class="card-pill score">💎 ±10 pt</span>
+                </div>
+                <div class="icon">🔢</div>
+                <h3>ด่านที่ 2: การเรียงสลับที่</h3>
+                <p>การจัดลำดับแบบเข้าใจง่าย (10 ข้อ)</p>
+                <span class="card-action">เริ่มสำรวจ ↗</span>
+            </button>
+
+            <button class="game-card interactable" type="button" data-game="games/cat3-samplespace/index.html">
+                <div class="card-pills">
+                    <span class="card-pill timer">⏱️ 2 นาที</span>
+                    <span class="card-pill score">💎 ±10 pt</span>
+                </div>
+                <div class="icon">🪙</div>
+                <h3>ด่านที่ 3: Sample Space</h3>
+                <p>การหาผลลัพธ์ทั้งหมดที่เป็นไปได้ (10 ข้อ)</p>
+                <span class="card-action">เริ่มสำรวจ ↗</span>
+            </button>
+
+            <button class="game-card interactable" type="button" data-game="games/cat4-probability/index.html">
+                <div class="card-pills">
+                    <span class="card-pill timer">⏱️ 2 นาที</span>
+                    <span class="card-pill score">💎 ±10 pt</span>
+                </div>
+                <div class="icon">🎯</div>
+                <h3>ด่านที่ 4: ความน่าจะเป็น</h3>
+                <p>โอกาสเกิดเหตุการณ์สุดท้าทาย (20 ข้อ)</p>
+                <span class="card-action">เริ่มสำรวจ ↗</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- พื้นที่รันโฟลเดอร์เกมย่อย -->
+    <div id="game-container" class="screen">
+        <button id="btn-back" class="interactable" type="button">🏠 กลับหน้าหลัก</button>
+        <iframe id="game-frame" title="เกมคณิตศาสตร์"></iframe>
+    </div>
+
+    <script src="hub.js"></script>
+</body>
+</html>

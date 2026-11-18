@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ด่านที่ 1: การนับเบื้องต้น</title>
+    <link rel="stylesheet" href="../shared/game-style.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="badge timer-badge" id="timer-badge" role="timer" aria-live="off" title="เวลาที่เหลือ 2 นาที">
+            <span class="timer-icon">⏱️</span>
+            <span id="timer-val">02:00</span>
+            <div class="timer-bar-track"><div class="timer-bar-fill" id="timer-bar-fill"></div></div>
+        </div>
+        <div class="badge" id="progress-badge">ข้อ 1 / 10</div>
+        <div class="badge score-badge" id="score-badge">
+            <span class="score-icon">💎</span>
+            <span>คะแนน: <b id="score-val">0</b></span>
+        </div>
+    </div>
+
+    <div id="play-view" class="view active">
+        <div class="question-box">
+            <div class="q-category" id="q-cat-label"></div>
+            <div class="q-text" id="q-text-label"></div>
+        </div>
+        <div class="ar-spacer"><div id="feedback-toast" role="status"></div></div>
+        <p class="answer-hint">เลือก 1 คำตอบ · ชี้แล้วจีบนิ้ว หรือคลิกคำตอบ</p><div class="choices-grid" id="choices-container"></div>
+    </div>
+
+    <div id="result-view" class="view">
+        <div class="summary-card">
+            <div class="result-trophy" id="result-trophy">🏆</div>
+            <h2 id="result-title">🎉 สรุปผลการเล่น!</h2>
+            <p id="result-subtitle">สรุปคะแนนการนับเบื้องต้น</p>
+            <div class="final-score-wrap">
+                <span class="final-score-label">คะแนนรวม</span>
+                <div class="final-score" id="final-score-val">0</div>
+                <div class="score-grade-pill master" id="score-grade">ระดับ: ยอดเยี่ยม! 🌟</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">⏱️</span>
+                    <span class="stat-val" id="stat-time">00:00</span>
+                    <span class="stat-name">เวลาที่ใช้</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-val correct" id="stat-correct">0</span>
+                    <span class="stat-name">ตอบถูก (+10)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">❌</span>
+                    <span class="stat-val wrong" id="stat-wrong">0</span>
+                    <span class="stat-name">ตอบผิด (-10)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎯</span>
+                    <span class="stat-val" id="stat-accuracy">0%</span>
+                    <span class="stat-name">ความแม่นยำ</span>
+                </div>
+            </div>
+            <div class="summary-buttons">
+                <button class="btn-restart ar-target" id="btn-restart" type="button">🔄 เล่นด่านนี้อีกครั้ง</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STAGE_TITLE = "หมวดที่ 1: การนับเบื้องต้น (จับคู่สิ่งของ)";
+        const GAME_QUESTIONS = [
+            { q: "1. มีเสื้อ 2 ตัว กางเกง 2 ตัว จะจับคู่ใส่ชุดได้กี่แบบ", choices: ["4 แบบ", "2 แบบ"], ans: "4 แบบ" },
+            { q: "2. มีข้าว 3 ชนิด แกง 2 ชนิด จะเลือกกินข้าวราดแกง 1 อย่างได้กี่แบบ", choices: ["6 แบบ", "5 แบบ"], ans: "6 แบบ" },
+            { q: "3. ทางเดินเข้าห้องมี 2 ทาง ทางเดินออกมี 2 ทาง จะเดินเข้าและออกได้กี่แบบ", choices: ["4 แบบ", "2 แบบ"], ans: "4 แบบ" },
+            { q: "4. ร้านไอศกรีมมีรสช็อกโกแลตกับวานิลลา และมีโคน 2 แบบ จะสั่งไอศกรีม 1 รส 1 โคน ได้กี่แบบ", choices: ["4 แบบ", "2 แบบ"], ans: "4 แบบ" },
+            { q: "5. มีรองเท้าแตะ 3 คู่ รองเท้าผ้าใบ 2 คู่ ถ้าต้องเลือกใส่ 1 คู่ จะมีตัวเลือกกี่แบบ", choices: ["5 แบบ", "6 แบบ"], ans: "5 แบบ" },
+            { q: "6. โยนเหรียญ 1 เหรียญ 1 ครั้ง จะออกหน้าได้กี่แบบ", choices: ["2 แบบ (หัว, ก้อย)", "1 แบบ (หัว)"], ans: "2 แบบ (หัว, ก้อย)" },
+            { q: "7. ทอดลูกเต๋า 1 ลูก 1 ครั้ง จะออกแต้มได้ทั้งหมดกี่แบบ", choices: ["6 แบบ", "2 แบบ"], ans: "6 แบบ" },
+            { q: "8. เดินทางจากบ้านไปตลาดมี 2 ทาง จากตลาดไปโรงเรียนมี 2 ทาง จะเดินทางจากบ้านไปโรงเรียนได้กี่เส้นทาง", choices: ["4 เส้นทาง", "2 เส้นทาง"], ans: "4 เส้นทาง" },
+            { q: "9. รหัสผ่านกระเป๋าเดินทางมี 1 หลัก (เลข 0-9) จะตั้งรหัสได้กี่แบบ", choices: ["10 แบบ", "9 แบบ"], ans: "10 แบบ" },
+            { q: "10. น้ำอัดลม 2 ยี่ห้อ น้ำผลไม้ 3 ยี่ห้อ เลือกดื่มแค่ 1 ขวด ได้กี่แบบ", choices: ["5 แบบ", "6 แบบ"], ans: "5 แบบ" }
+        ];
+    </script>
+    <script src="../shared/interactions.js"></script>
+    <script src="../shared/game-engine.js"></script>
+</body>
+</html>

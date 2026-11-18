@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ด่านที่ 3: Sample Space</title>
+    <link rel="stylesheet" href="../shared/game-style.css">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="badge timer-badge" id="timer-badge" role="timer" aria-live="off" title="เวลาที่เหลือ 2 นาที">
+            <span class="timer-icon">⏱️</span>
+            <span id="timer-val">02:00</span>
+            <div class="timer-bar-track"><div class="timer-bar-fill" id="timer-bar-fill"></div></div>
+        </div>
+        <div class="badge" id="progress-badge">ข้อ 1 / 10</div>
+        <div class="badge score-badge" id="score-badge">
+            <span class="score-icon">💎</span>
+            <span>คะแนน: <b id="score-val">0</b></span>
+        </div>
+    </div>
+
+    <div id="play-view" class="view active">
+        <div class="question-box">
+            <div class="q-category" id="q-cat-label"></div>
+            <div class="q-text" id="q-text-label"></div>
+        </div>
+        <div class="ar-spacer"><div id="feedback-toast" role="status"></div></div>
+        <p class="answer-hint">เลือก 1 คำตอบ · ชี้แล้วจีบนิ้ว หรือคลิกคำตอบ</p><div class="choices-grid" id="choices-container"></div>
+    </div>
+
+    <div id="result-view" class="view">
+        <div class="summary-card">
+            <div class="result-trophy" id="result-trophy">🏆</div>
+            <h2 id="result-title">🎉 สรุปผลการเล่น!</h2>
+            <p id="result-subtitle">สรุปคะแนน Sample Space</p>
+            <div class="final-score-wrap">
+                <span class="final-score-label">คะแนนรวม</span>
+                <div class="final-score" id="final-score-val">0</div>
+                <div class="score-grade-pill master" id="score-grade">ระดับ: ยอดเยี่ยม! 🌟</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">⏱️</span>
+                    <span class="stat-val" id="stat-time">00:00</span>
+                    <span class="stat-name">เวลาที่ใช้</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-val correct" id="stat-correct">0</span>
+                    <span class="stat-name">ตอบถูก (+10)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">❌</span>
+                    <span class="stat-val wrong" id="stat-wrong">0</span>
+                    <span class="stat-name">ตอบผิด (-10)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎯</span>
+                    <span class="stat-val" id="stat-accuracy">0%</span>
+                    <span class="stat-name">ความแม่นยำ</span>
+                </div>
+            </div>
+            <div class="summary-buttons">
+                <button class="btn-restart ar-target" id="btn-restart" type="button">🔄 เล่นด่านนี้อีกครั้ง</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STAGE_TITLE = "หมวดที่ 3: การหาจำนวนผลลัพธ์ทั้งหมด (Sample Space)";
+        const GAME_QUESTIONS = [
+            { q: "21. โยนเหรียญ 1 เหรียญ 2 ครั้ง ผลลัพธ์ทั้งหมดมีกี่แบบ", choices: ["4 แบบ", "2 แบบ"], ans: "4 แบบ" },
+            { q: "22. โยนเหรียญ 2 เหรียญ พร้อมกัน 1 ครั้ง มีผลลัพธ์ทั้งหมดกี่แบบ", choices: ["4 แบบ", "2 แบบ"], ans: "4 แบบ" },
+            { q: "23. โยนเหรียญ 1 เหรียญ และทอดลูกเต๋า 1 ลูก พร้อมกัน มีผลลัพธ์กี่แบบ", choices: ["12 แบบ", "8 แบบ"], ans: "12 แบบ" },
+            { q: "24. ในถุงมีลูกแก้วสีแดง 1 ลูก สีน้ำเงิน 1 ลูก สุ่มหยิบ 1 ลูก ผลลัพธ์ที่ได้คือสีอะไรบ้าง", choices: ["แดง, น้ำเงิน", "แดงเท่านั้น"], ans: "แดง, น้ำเงิน" },
+            { q: "25. สลากมีเลข 1, 2, 3 สุ่มหยิบขึ้นมา 1 ใบ ผลลัพธ์ที่อาจจะเกิดขึ้นมีเลขอะไรบ้าง", choices: ["1, 2, 3", "1, 2"], ans: "1, 2, 3" },
+            { q: "26. ทอดลูกเต๋า 2 ลูกพร้อมกัน ผลลัพธ์ทั้งหมดมีกี่แบบ", choices: ["36 แบบ", "12 แบบ"], ans: "36 แบบ" },
+            { q: "27. ไพ่ 1 สำรับมี 52 ใบ ถ้าหยิบ 1 ใบ จะมีโอกาสเกิดผลลัพธ์ทั้งหมดกี่แบบ", choices: ["52 แบบ", "13 แบบ"], ans: "52 แบบ" },
+            { q: "28. ในกล่องมีลูกบอลเขียนเบอร์ 1 ถึง 5 สุ่มหยิบ 1 ลูก เกิดผลลัพธ์ได้กี่แบบ", choices: ["5 แบบ", "1 แบบ"], ans: "5 แบบ" },
+            { q: "29. จับฉลากชื่อนักเรียนชาย 1 คน จาก 3 คน เกิดผลลัพธ์ได้กี่แบบ", choices: ["3 แบบ", "1 แบบ"], ans: "3 แบบ" },
+            { q: "30. โยนเหรียญ 1 เหรียญ 3 ครั้ง มีผลลัพธ์ทั้งหมดกี่แบบ", choices: ["8 แบบ", "6 แบบ"], ans: "8 แบบ" }
+        ];
+    </script>
+    <script src="../shared/interactions.js"></script>
+    <script src="../shared/game-engine.js"></script>
+</body>
+</html>
